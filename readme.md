@@ -38,6 +38,21 @@
 
 ---
 
+## Use
+
+```bash
+# Clone this repository
+$ git clone https://github.com/saulotarsobc/electron-with-vite
+# Go into the repository
+$ cd electron-with-vite
+# Install dependencies
+$ npm install
+# Run the app
+$ npm run dev
+```
+
+---
+
 ## Scripts
 
 - **dev**: Builds the Electron app and starts the development environment using the dev script.
