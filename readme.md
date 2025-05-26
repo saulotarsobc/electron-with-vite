@@ -38,6 +38,20 @@
 
 ---
 
+## Scripts
+
+- **dev**: Builds the Electron app and starts the development environment using the dev script.
+- **vite:dev**: Starts the Vite development server.
+- **vite:build**: Compiles TypeScript and builds the Vite application for production.
+- **preview**: Previews the built Vite application.
+- **electron:build**: Compiles TypeScript files in the electron directory.
+- **build**: Runs both electron:build and vite:build to prepare the entire application.
+- **postinstall**: Installs application dependencies using electron-builder.
+- **update:readme**: Updates the readme file using a script.
+- **dist**: Builds the application and packages it for distribution using electron-builder.
+
+---
+
 ## References
 
 - [Electron Builder](https://www.electron.build/)
