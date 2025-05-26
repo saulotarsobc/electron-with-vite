@@ -13,10 +13,10 @@
     "vite:build": "tsc && vite build",
     "preview": "vite preview",
     "electron:build": "tsc -p electron",
-    "build": "npm run electron:build && npm run vite:build",
+    "build:all": "npm run electron:build && npm run vite:build",
     "postinstall": "electron-builder install-app-deps",
     "update:readme": "tsx scripts/update-readme.js",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build:all && electron-builder"
   },
   "dependencies": {
     "react": "^19.1.0",
