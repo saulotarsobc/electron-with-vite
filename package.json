@@ -1,6 +1,7 @@
 {
   "name": "electron-with-vite",
   "displayName": "SC - Electron Vite",
+  "description": "Electron with Vite boilerplate",
   "private": false,
   "version": "0.0.1",
   "author": {
