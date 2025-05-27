@@ -8,15 +8,15 @@
   },
   "main": "dist/backend/main.js",
   "scripts": {
-    "dev": "npm run electron:build && tsx scripts/dev.ts",
+    "dev": "yarn electron:build && tsx scripts/dev.ts",
     "vite:dev": "vite",
     "vite:build": "tsc && vite build",
     "preview": "vite preview",
     "electron:build": "tsc -p electron",
-    "build:all": "npm run electron:build && npm run vite:build",
+    "build:all": "yarn electron:build && yarn vite:build",
     "postinstall": "electron-builder install-app-deps",
     "update:readme": "tsx scripts/update-readme.js",
-    "dist": "npm run build:all && electron-builder"
+    "dist": "yarn build:all && electron-builder"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
-    "@types/react": "^19.1.5",
+    "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.5.0",
     "electron": "^36.3.1",
@@ -45,5 +45,20 @@
     "vite",
     "react",
     "electron-builder"
-  ]
+  ],
+  "browserslist": [
+    "Electron >= 36"
+  ],
+  "engines": {
+    "node": "^22.16.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saulotarsobc/electron-with-vite"
+  }
 }
