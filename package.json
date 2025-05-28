@@ -1,7 +1,6 @@
 {
   "name": "sc-electron-vite",
   "displayName": "SC - Electron Vite",
-  "productName": "SC - Electron Vite",
   "description": "Electron with Vite boilerplate",
   "private": false,
   "version": "0.0.1",
@@ -64,7 +63,8 @@
     "url": "https://github.com/saulotarsobc/electron-with-vite"
   },
   "build": {
-    "appId": "br.com.${name}",
+    "appId": "br.com.saulotarsobc.electron-with-vite",
+    "productName": "SC - Electron Vite",
     "files": [
       "dist"
     ],
