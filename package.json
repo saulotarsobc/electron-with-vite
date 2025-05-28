@@ -61,5 +61,45 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/saulotarsobc/electron-with-vite"
+  },
+  "build": {
+    "productName": "SC - Electron Vite",
+    "appId": "br.com.vite.electron.sc",
+    "files": [
+      "dist"
+    ],
+    "directories": {
+      "output": "out"
+    },
+    "icon": "build/icon.png",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "${name}-${version}-windows-${arch}.${ext}",
+      "signAndEditExecutable": false,
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "artifactName": "${name}-${version}-windows-${arch}-nsis-installer.${ext}",
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "perMachine": true
+    },
+    "mac": {
+      "target": "dmg",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "darkModeSupport": true,
+      "signIgnore": null,
+      "icon": "build/icon.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "icon": "build/icon.png"
+    }
   }
 }
