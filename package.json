@@ -1,5 +1,5 @@
 {
-  "name": "electron-with-vite",
+  "name": "sc-electron-vite",
   "displayName": "SC - Electron Vite",
   "description": "Electron with Vite boilerplate",
   "private": false,
@@ -71,35 +71,23 @@
     "directories": {
       "output": "out"
     },
-    "icon": "build/icon.ico",
     "win": {
       "target": [
         "nsis"
       ],
-      "artifactName": "${name}-${version}-windows-${arch}.${ext}",
-      "signAndEditExecutable": false,
-      "icon": "build/icon.ico"
-    },
-    "nsis": {
-      "artifactName": "${name}-${version}-windows-${arch}-nsis-installer.${ext}",
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false,
-      "perMachine": true
+      "artifactName": "${name}-${version}-windows-${arch}.${ext}"
     },
     "mac": {
       "target": "dmg",
-      "artifactName": "${productName}-Setup-${version}.${ext}",
-      "darkModeSupport": true,
       "signIgnore": null,
-      "icon": "build/icon.png"
+      "artifactName": "${productName}-Setup-${version}.${ext}"
     },
     "linux": {
       "target": [
         "AppImage",
         "deb"
       ],
-      "artifactName": "${productName}-Setup-${version}.${ext}",
-      "icon": "build/icon.png"
+      "artifactName": "${name}-${version}-linux-${arch}.${ext}"
     }
   }
 }
