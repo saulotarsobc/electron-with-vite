@@ -71,14 +71,14 @@
     "directories": {
       "output": "out"
     },
-    "icon": "build/icon.png",
+    "icon": "build/icon.ico",
     "win": {
       "target": [
         "nsis"
       ],
       "artifactName": "${name}-${version}-windows-${arch}.${ext}",
       "signAndEditExecutable": false,
-      "icon": "build/icon.png"
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "artifactName": "${name}-${version}-windows-${arch}-nsis-installer.${ext}",
