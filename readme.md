@@ -24,7 +24,7 @@
 <!-- Badge Start -->
 <div align="center">
  <img alt="static badge from nodejs" src="https://img.shields.io/badge/NodeJS-v22.16.0-44883e">
- <img alt="static badge from electronjs" src="https://img.shields.io/badge/ElectronJS-v36.3.1-46816e">
+ <img alt="static badge from electronjs" src="https://img.shields.io/badge/ElectronJS-v36.3.2-46816e">
  <img alt="static badge from electron builder" src="https://img.shields.io/badge/Electron%20Builder-v26.0.12-blue">
  <img alt="static badge from typescript" src="https://img.shields.io/badge/TypeScript-v~5.8.3-blue">
  <img alt="static badge from nextjs" src="https://img.shields.io/badge/NextJS-vN/A-black">
