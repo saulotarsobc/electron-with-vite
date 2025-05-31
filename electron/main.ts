@@ -18,6 +18,7 @@ async function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: join(__dirname, "preload.js"),
+      webSecurity: true,
     },
   });
 
