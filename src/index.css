@@ -1,3 +1,9 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -87,8 +93,7 @@ button:focus-visible {
 
 main {
   flex: 1;
-  padding: 2rem;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .logo {

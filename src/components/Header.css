@@ -1,7 +1,11 @@
 .header {
   background-color: #242424;
-  padding: 1rem;
-  border-bottom: 1px solid #333;
+  padding: 0 .5rem;
+  border-bottom: 1px solid hsl(0, 0%, 20%);
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .header nav ul {
@@ -9,7 +13,7 @@
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .header nav a {
