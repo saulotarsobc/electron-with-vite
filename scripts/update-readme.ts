@@ -9,34 +9,34 @@ const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 const nodeVersion = process.version.split("v")[1];
 
 const dependencies = {
-    NodeJS: nodeVersion,
-    ElectronJS: packageJson.devDependencies.electron,
-    "Electron Builder": packageJson.devDependencies["electron-builder"],
-    TypeScript: packageJson.devDependencies.typescript,
-    NextJS: packageJson.devDependencies.next,
-    ReactJS: packageJson.devDependencies.react,
+  NodeJS: nodeVersion,
+  ElectronJS: packageJson.devDependencies.electron,
+  "Electron Builder": packageJson.devDependencies["electron-builder"],
+  TypeScript: packageJson.devDependencies.typescript,
+  NextJS: packageJson.devDependencies.next,
+  ReactJS: packageJson.devDependencies.react,
 };
 
 const badgeColors = {
-    ElectronJS: "46816e",
-    "Electron Builder": "blue",
-    NodeJS: "44883e",
-    TypeScript: "blue",
-    NextJS: "black",
-    ReactJS: "61DAFB",
+  ElectronJS: "46816e",
+  "Electron Builder": "blue",
+  NodeJS: "44883e",
+  TypeScript: "blue",
+  NextJS: "black",
+  ReactJS: "61DAFB",
 };
 
 const badges = Object.entries(dependencies).map(([name, version]) => {
-    if (typeof version === "string") {
-        return ` <img alt="static badge from ${name.toLocaleLowerCase()}" src="https://img.shields.io/badge/${name.replace(
-            / /g,
-            "%20"
-        )}-v${version.replace("^", "")}-${badgeColors[name]}">`;
-    }
+  if (typeof version === "string") {
     return ` <img alt="static badge from ${name.toLocaleLowerCase()}" src="https://img.shields.io/badge/${name.replace(
-        / /g,
-        "%20"
-    )}-vN/A-${badgeColors[name]}">`;
+      / /g,
+      "%20"
+    )}-v${version.replace("^", "")}-${badgeColors[name]}">`;
+  }
+  return ` <img alt="static badge from ${name.toLocaleLowerCase()}" src="https://img.shields.io/badge/${name.replace(
+    / /g,
+    "%20"
+  )}-vN/A-${badgeColors[name]}">`;
 });
 
 const badgesString = `<div align="center">\n${badges.join("\n")}\n</div>`;
@@ -50,8 +50,8 @@ const badgeStart = "<!-- Badge Start -->";
 const badgeEnd = "<!-- Badge End -->";
 
 const updatedReadmeContent = readmeContent.replace(
-    new RegExp(`${badgeStart}[\\s\\S]*?${badgeEnd}`),
-    `${badgeStart}\n${badgesString}\n${badgeEnd}`
+  new RegExp(`${badgeStart}[\\s\\S]*?${badgeEnd}`),
+  `${badgeStart}\n${badgesString}\n${badgeEnd}`
 );
 
 writeFileSync(readmePath, updatedReadmeContent, "utf-8");

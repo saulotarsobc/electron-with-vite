@@ -14,9 +14,9 @@
     "preview": "vite preview",
     "build": "tsc && vite build",
     "postinstall": "electron-builder install-app-deps",
-    "update:readme": "tsx scripts/update-readme.js",
-    "predist": "tsx electron-builder.config.ts",
-    "dist": "yarn build && electron-builder"
+    "update-readme": "tsx scripts/update-readme.js",
+    "generate-electron-builder": "tsx scripts/generate-electron-builder.ts",
+    "dist": "yarn generate-electron-builder && yarn build && electron-builder"
   },
   "dependencies": {
     "react": "^19.1.0",

@@ -33,7 +33,7 @@ const config: Configuration = {
   },
 };
 
-const outputPath = resolve(__dirname, "electron-builder.json");
+const outputPath = resolve(__dirname, "..", "electron-builder.json");
 
 writeFileSync(outputPath, JSON.stringify(config, null, 2));
 
