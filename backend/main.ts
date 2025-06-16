@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { displayName } from "../package.json";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -28,6 +29,8 @@ let win: BrowserWindow | null;
 
 function createWindow() {
   win = new BrowserWindow({
+    title: displayName,
+    icon: path.join(process.env.VITE_PUBLIC, "icon.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
     },
