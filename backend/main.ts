@@ -26,13 +26,6 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 
 let win: BrowserWindow | null;
 
-console.log({
-  MAIN_DIST,
-  RENDERER_DIST,
-  VITE_DEV_SERVER_URL,
-  VITE_PUBLIC: process.env.VITE_PUBLIC,
-});
-
 function createWindow() {
   win = new BrowserWindow({
     webPreferences: {
