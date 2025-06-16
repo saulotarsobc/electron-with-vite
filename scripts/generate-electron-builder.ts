@@ -2,13 +2,14 @@ import { Configuration } from "electron-builder";
 import { writeFileSync } from "fs";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import { displayName } from "../package.json";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const config: Configuration = {
   appId: "br.com.saulotarsobc.electron-with-vite",
-  productName: "SC - Electron Vite",
+  productName: displayName,
   files: ["dist/**/*"],
   directories: {
     output: "out",
