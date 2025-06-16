@@ -1,9 +1,8 @@
+import Header from "@/components/Header";
+import About from "@/pages/about";
+import Dashboard from "@/pages/dashboard";
+import Home from "@/pages/home";
 import { Route, HashRouter as Router, Routes } from "react-router-dom";
-import Header from "./components/Header";
-import "./components/Header.css";
-import About from "./pages/About";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (

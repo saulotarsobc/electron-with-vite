@@ -1,9 +1,5 @@
 declare global {
-    interface Window {
-        api: {
-            sayHello(): () => void;
-        };
-    }
+    interface Window { }
 }
 
 export { };

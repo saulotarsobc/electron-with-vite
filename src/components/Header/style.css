@@ -1,0 +1,28 @@
+header#header {
+  background-color: #242424;
+  padding: 0 .5rem;
+  border-bottom: 1px solid hsl(0, 0%, 20%);
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #646cff;
+      }
+    }
+  }
+}
