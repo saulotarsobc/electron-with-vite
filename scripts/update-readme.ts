@@ -13,8 +13,7 @@ const dependencies = {
   ElectronJS: packageJson.devDependencies.electron,
   "Electron Builder": packageJson.devDependencies["electron-builder"],
   TypeScript: packageJson.devDependencies.typescript,
-  NextJS: packageJson.devDependencies.next,
-  ReactJS: packageJson.devDependencies.react,
+  ReactJS: packageJson.dependencies.react,
 };
 
 const badgeColors = {
