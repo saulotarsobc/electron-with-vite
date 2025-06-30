@@ -37,6 +37,11 @@
 
 ---
 
+## Help
+
+- [Mantine](https://mantine.dev/)
+- [Mantine Theme Editor - remoraid](https://remoraid.dev/)
+
 ## Getting Started
 
 ```bash

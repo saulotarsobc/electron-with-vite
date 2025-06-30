@@ -1,23 +1,21 @@
-import Header from "@/components/Header";
-import About from "@/pages/about";
-import Dashboard from "@/pages/dashboard";
-import Home from "@/pages/home";
+import { MantineProvider } from "@mantine/core";
 import { Route, HashRouter as Router, Routes } from "react-router-dom";
+import { HomePage } from "./pages/Home.page";
+import theme from "./theme";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+    <MantineProvider theme={theme}>
+      <Router>
+        <div className="App">
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </MantineProvider>
   );
 }
 
