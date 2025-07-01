@@ -1,4 +1,4 @@
-import { Anchor, Text, Title } from "@mantine/core";
+import { Anchor, Card, Code, Text, Title } from "@mantine/core";
 import classes from "./Welcome.module.css";
 
 export function Welcome() {
@@ -23,6 +23,12 @@ export function Welcome() {
         </Anchor>
         . To get started edit pages/Home.page.tsx file.
       </Text>
+
+      <Card>
+        <Code mt={'lg'} ta="center" style={{ fontFamily: 'monospace' }}>
+          This is a monospace font. Just a example.
+        </Code>
+      </Card>
     </>
   );
 }
