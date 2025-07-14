@@ -3,3 +3,5 @@
 /dist
 /.env
 electron-builder.json
+yarn.lock
+package-lock.json
