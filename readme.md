@@ -23,7 +23,7 @@
 
 <!-- Badge Start -->
 <div align="center">
- <img alt="static badge from nodejs" src="https://img.shields.io/badge/NodeJS-v20.19.3-44883e">
+ <img alt="static badge from nodejs" src="https://img.shields.io/badge/NodeJS-v22.17.1-44883e">
  <img alt="static badge from electronjs" src="https://img.shields.io/badge/ElectronJS-v37.2.3-46816e">
  <img alt="static badge from electron builder" src="https://img.shields.io/badge/Electron%20Builder-v26.0.12-blue">
  <img alt="static badge from typescript" src="https://img.shields.io/badge/TypeScript-v5.8.3-blue">
