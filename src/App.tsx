@@ -7,13 +7,11 @@ function App() {
   return (
     <MantineProvider theme={theme}>
       <Router>
-        <div className="App">
-          <main>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-            </Routes>
-          </main>
-        </div>
+        <main className="App">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </main>
       </Router>
     </MantineProvider>
   );
