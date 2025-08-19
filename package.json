@@ -13,25 +13,25 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "tsc && vite build",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps && npm run update-readme",
     "update-readme": "tsx scripts/update-readme.js",
     "generate-electron-builder": "tsx scripts/generate-electron-builder.ts",
-    "dist": "yarn generate-electron-builder && yarn build && electron-builder"
+    "dist": "npm run generate-electron-builder && npm run build && electron-builder"
   },
   "dependencies": {
-    "@mantine/core": "^8.2.4",
-    "@mantine/hooks": "^8.2.4",
+    "@mantine/core": "^8.2.5",
+    "@mantine/hooks": "^8.2.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.8.0"
+    "react-router-dom": "^7.8.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
-    "@typescript-eslint/eslint-plugin": "^8.39.1",
-    "@typescript-eslint/parser": "^8.39.1",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "electron": "^37.2.6",
+    "electron": "^37.3.0",
     "electron-builder": "^26.0.12",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -52,7 +52,7 @@
     "electron-builder"
   ],
   "browserslist": [
-    "Electron >= 36"
+    "Electron >= 37"
   ],
   "engines": {
     "node": ">=22.0.0"
