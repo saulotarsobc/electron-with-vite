@@ -3,7 +3,7 @@
   "displayName": "SC - Electron Vite",
   "description": "Electron with Vite boilerplate",
   "private": false,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": {
     "name": "Saulo Costa"
   },
