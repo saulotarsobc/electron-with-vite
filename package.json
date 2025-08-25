@@ -13,7 +13,7 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "tsc && vite build",
-    "postinstall": "electron-builder install-app-deps && npm run update-readme",
+    "postinstall": "electron-builder install-app-deps",
     "update-readme": "tsx scripts/update-readme.js",
     "generate-electron-builder": "tsx scripts/generate-electron-builder.ts",
     "dist": "npm run generate-electron-builder && npm run build && electron-builder"
