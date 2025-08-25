@@ -50,9 +50,9 @@ $ git clone https://github.com/saulotarsobc/electron-with-vite
 # Go into the repository
 $ cd electron-with-vite
 # Install dependencies
-$ yarn install
+$ npm install
 # Run the app
-$ yarn dev
+$ npm run dev
 ```
 
 ---
