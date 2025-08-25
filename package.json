@@ -5,7 +5,8 @@
   "private": false,
   "version": "1.0.4",
   "author": {
-    "name": "Saulo Costa"
+    "name": "Saulo Costa",
+    "email": "saulotarsobc+electronvite@gmail.com"
   },
   "type": "module",
   "main": "dist/backend/main.js",
