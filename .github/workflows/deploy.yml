@@ -48,16 +48,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Prepare artifacts folder
+      - name: Prepare out folder
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            fs.rmSync('artifacts', { recursive: true, force: true });
-            fs.mkdirSync('artifacts', { recursive: true });
+            fs.rmSync('out', { recursive: true, force: true });
+            fs.mkdirSync('out', { recursive: true });
       - uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: out
           merge-multiple: true
       - uses: softprops/action-gh-release@v2
         with:
@@ -65,11 +65,11 @@ jobs:
           target_commitish: ${{ github.sha }}
           generate_release_notes: true
           files: |
-            artifacts/*.exe
-            artifacts/*.AppImage
-            artifacts/*.dmg
-            artifacts/*.deb
-            artifacts/*.rpm
-            artifacts/*.zip
-            artifacts/*.tar.gz
+            out/*.exe
+            out/*.AppImage
+            out/*.dmg
+            out/*.deb
+            out/*.rpm
+            out/*.zip
+            out/*.tar.gz
           fail_on_unmatched_files: true
