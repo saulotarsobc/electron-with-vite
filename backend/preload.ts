@@ -1,24 +1,29 @@
 import { contextBridge, ipcRenderer } from "electron";
+import {
+  IpcEventChannel,
+  IpcInvokeChannel,
+  isEventChannel,
+  isInvokeChannel,
+} from "../shared/ipc/contracts";
 
-contextBridge.exposeInMainWorld("ipcRenderer", {
-  on(...args: Parameters<typeof ipcRenderer.on>) {
-    const [channel, listener] = args;
-    return ipcRenderer.on(channel, (event, ...args) =>
-      listener(event, ...args)
-    );
+// Typed API surface
+const api = {
+  invoke: async <C extends IpcInvokeChannel>(channel: C, args?: any) => {
+    if (!isInvokeChannel(channel)) throw new Error("Invalid invoke channel");
+    return ipcRenderer.invoke(channel, args);
   },
-  off(...args: Parameters<typeof ipcRenderer.off>) {
-    const [channel, ...omit] = args;
-    return ipcRenderer.off(channel, ...omit);
+  on: <C extends IpcEventChannel>(
+    channel: C,
+    listener: (data: any) => void
+  ) => {
+    if (!isEventChannel(channel)) throw new Error("Invalid event channel");
+    const wrapped = (_event: Electron.IpcRendererEvent, payload: any) =>
+      listener(payload);
+    ipcRenderer.on(channel, wrapped);
+    return () => ipcRenderer.removeListener(channel, wrapped);
   },
-  send(...args: Parameters<typeof ipcRenderer.send>) {
-    const [channel, ...omit] = args;
-    return ipcRenderer.send(channel, ...omit);
-  },
-  invoke(...args: Parameters<typeof ipcRenderer.invoke>) {
-    const [channel, ...omit] = args;
-    return ipcRenderer.invoke(channel, ...omit);
-  },
-});
+};
 
-console.log("preload here!");
+contextBridge.exposeInMainWorld("api", api);
+
+console.log("preload initialized");
