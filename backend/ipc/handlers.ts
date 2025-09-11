@@ -84,11 +84,4 @@ export function registerIpcHandlers(mainWindow: BrowserWindow | null) {
         : "light";
     return { success: true, data: { theme } };
   });
-
-  /**
-   * App lifecycle: Notify when app is ready to show main window
-   */
-  ipcMain.handle("app:ready", () => {
-    return { success: true };
-  });
 }

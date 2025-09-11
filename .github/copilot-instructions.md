@@ -98,6 +98,8 @@ ipcRenderer.invoke("some-channel", data);
 3. Update type guards (`isInvokeChannel`, `isEventChannel`)
 4. Create or update corresponding hook in `src/hooks/`
 
+**⚠️ CRITICAL**: Avoid duplicate IPC handlers! The `app:ready` channel is handled in `main.ts` for window lifecycle management - do NOT add it to `handlers.ts`.
+
 ### Window Management
 
 - New windows should follow the pattern in `windowManager.ts`
