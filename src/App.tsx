@@ -1,5 +1,5 @@
-import { MantineProvider, useMantineColorScheme } from "@mantine/core";
-import { useEffect } from "react";
+import { useThemeSync } from "@/hooks";
+import { MantineProvider } from "@mantine/core";
 import {
   Navigate,
   Route,
@@ -10,19 +10,12 @@ import { HomePage } from "./pages/Home.page";
 import { SplashPage } from "./pages/Splash.page";
 import theme from "./theme";
 
+/**
+ * App content component that handles routing and theme synchronization
+ */
 function AppContent() {
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
-
-  useEffect(() => {
-    const off = window.api.on("theme:updated", (payload: any) => {
-      if (payload.action === "toggle") {
-        setColorScheme(colorScheme === "dark" ? "light" : "dark");
-      } else if (payload.theme) {
-        setColorScheme(payload.theme);
-      }
-    });
-    return off;
-  }, [setColorScheme, colorScheme]);
+  // Use custom hook to handle theme synchronization with Electron
+  useThemeSync();
 
   return (
     <Router>
@@ -37,6 +30,9 @@ function AppContent() {
   );
 }
 
+/**
+ * Main App component with Mantine provider
+ */
 function App() {
   return (
     <MantineProvider theme={theme}>

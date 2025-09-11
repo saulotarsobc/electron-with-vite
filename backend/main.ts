@@ -1,19 +1,13 @@
-import {
-  app,
-  BrowserWindow,
-  dialog,
-  ipcMain,
-  Menu,
-  nativeTheme,
-  Tray,
-} from "electron";
+import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { displayName } from "../package.json";
+import { registerIpcHandlers } from "./ipc/handlers";
 import { createAppMenu } from "./utils/menu";
+import { createTray } from "./windows/trayManager";
+import { createMainWindow, createSplashWindow } from "./windows/windowManager";
 
+// === Path Configuration ===
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 process.env.APP_ROOT = path.join(__dirname, "..");
 
 export const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
@@ -30,210 +24,108 @@ export const RENDERER_DIST = path.join(
   "frontend"
 );
 
-// In dev we want actual public folder; in production packaged assets in renderer dist
+// Public folder path (dev vs production)
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT!, "..", "public")
   : RENDERER_DIST;
 
-let win: BrowserWindow | null;
-let splash: BrowserWindow | null;
-let tray: Tray | null = null;
+// === Application State ===
+let mainWindow: BrowserWindow | null = null;
+let splashWindow: BrowserWindow | null = null;
 
-import fsSync from "node:fs";
-import { readFile as readFileAsync, stat as statAsync } from "node:fs/promises";
+/**
+ * Initialize the application windows and components
+ */
+function initializeApp() {
+  const preloadPath = path.join(__dirname, "preload.mjs");
 
-function resolvePublicPath() {
-  if (VITE_DEV_SERVER_URL) {
-    // when running dev, process.env.APP_ROOT points to project root/backend
-    const candidate = path.join(process.env.APP_ROOT!, "public");
-    if (fsSync.existsSync(path.join(candidate, "icon.ico"))) return candidate;
-  }
-  return process.env.VITE_PUBLIC || path.join(process.env.APP_ROOT!, "public");
+  // Create splash window first
+  splashWindow = createSplashWindow(
+    RENDERER_DIST,
+    process.env.VITE_PUBLIC!,
+    preloadPath,
+    VITE_DEV_SERVER_URL
+  );
+
+  // Create main window (hidden initially)
+  mainWindow = createMainWindow(
+    RENDERER_DIST,
+    process.env.VITE_PUBLIC!,
+    preloadPath,
+    VITE_DEV_SERVER_URL
+  );
+
+  // Create system tray
+  createTray(
+    process.env.APP_ROOT!,
+    process.env.VITE_PUBLIC!,
+    mainWindow,
+    VITE_DEV_SERVER_URL
+  );
+
+  // Create application menu
+  createAppMenu();
+
+  // Register IPC handlers
+  registerIpcHandlers(mainWindow);
 }
 
-function getTrayIconPath() {
-  return path.join(resolvePublicPath(), "icon.ico");
-}
+// === Event Handlers ===
 
-function createMainWindow() {
-  win = new BrowserWindow({
-    show: false,
-    title: `${displayName} - v${app.getVersion()}`,
-    icon: path.join(process.env.VITE_PUBLIC!, "icon.ico"),
-    webPreferences: {
-      preload: path.join(__dirname, "preload.mjs"),
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-  });
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL + "#/home");
-  } else {
-    win.loadFile(path.join(RENDERER_DIST, "index.html"), { hash: "home" });
-  }
-}
-
-function createSplashWindow() {
-  splash = new BrowserWindow({
-    width: 420,
-    height: 260,
-    resizable: false,
-    frame: false,
-    transparent: false,
-    show: true,
-    alwaysOnTop: true,
-    icon: path.join(process.env.VITE_PUBLIC!, "icon.ico"),
-    webPreferences: {
-      preload: path.join(__dirname, "preload.mjs"),
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-  });
-  if (VITE_DEV_SERVER_URL) {
-    splash.loadURL(VITE_DEV_SERVER_URL + "#/splash");
-  } else {
-    splash.loadFile(path.join(RENDERER_DIST, "index.html"), { hash: "splash" });
-  }
-}
-
-function createTray() {
-  if (tray) return;
-  tray = new Tray(getTrayIconPath());
-  const updateMenu = () => {
-    const themeLabel = nativeTheme.shouldUseDarkColors ? "Dark" : "Light";
-    const contextMenu = Menu.buildFromTemplate([
-      {
-        label: "Show",
-        click: () => {
-          win?.show();
-          win?.focus();
-        },
-      },
-      { label: "Hide", click: () => win?.hide() },
-      { type: "separator" },
-      { label: `Theme: ${themeLabel}`, enabled: false },
-      {
-        label: "Toggle Theme (renderer)",
-        click: () =>
-          win?.webContents.send("theme:updated", {
-            action: "toggle",
-          }),
-      },
-      { type: "separator" },
-      { label: "Quit", click: () => app.quit() },
-    ]);
-    tray?.setToolTip(displayName);
-    tray?.setContextMenu(contextMenu);
-  };
-  updateMenu();
-  nativeTheme.on("updated", updateMenu);
-}
-
-// IPC Handlers
-ipcMain.handle("fs:open-file", async (_event, args) => {
-  try {
-    const result = await dialog.showOpenDialog(win!, {
-      properties: [args?.multiple ? "multiSelections" : "openFile"],
-      filters: args?.filters,
-    });
-    return {
-      success: true,
-      data: { cancelled: result.canceled, filePaths: result.filePaths },
-    };
-  } catch (e: any) {
-    return { success: false, error: e.message };
-  }
-});
-
-ipcMain.handle("fs:read-file", async (_event, args) => {
-  try {
-    const content = await readFileAsync(args.path, "utf-8");
-    return { success: true, data: { path: args.path, content } };
-  } catch (e: any) {
-    return { success: false, error: e.message };
-  }
-});
-
-ipcMain.handle("theme:get", async () => {
-  const theme =
-    nativeTheme.themeSource === "system"
-      ? "system"
-      : nativeTheme.shouldUseDarkColors
-      ? "dark"
-      : "light";
-  return { success: true, data: { theme } };
-});
-
-ipcMain.handle("fs:stat-files", async (_event, args) => {
-  try {
-    const paths: string[] = Array.isArray(args?.paths)
-      ? args.paths.slice(0, 50)
-      : [];
-    const files = [] as Array<{
-      path: string;
-      size: number;
-      mtimeMs: number;
-      isDir: boolean;
-    }>;
-    for (const p of paths) {
-      try {
-        const s = await statAsync(p);
-        files.push({
-          path: p,
-          size: s.size,
-          mtimeMs: s.mtimeMs,
-          isDir: s.isDirectory(),
-        });
-      } catch (e) {
-        // ignore individual errors
-      }
-    }
-    return { success: true, data: { files } };
-  } catch (e: any) {
-    return { success: false, error: e.message };
-  }
-});
-
+/**
+ * Handle theme changes and notify renderer
+ */
 nativeTheme.on("updated", () => {
-  win?.webContents.send("theme:updated", {
+  mainWindow?.webContents.send("theme:updated", {
     theme: nativeTheme.shouldUseDarkColors ? "dark" : "light",
   });
 });
 
+/**
+ * Handle app ready signal from renderer
+ */
 ipcMain.handle("app:ready", () => {
-  if (splash && !splash.isDestroyed()) {
-    splash.destroy();
+  // Destroy splash window and show main window
+  if (splashWindow && !splashWindow.isDestroyed()) {
+    splashWindow.destroy();
+    splashWindow = null;
   }
-  if (win && !win.isDestroyed()) {
-    win.show();
-    win.focus();
+
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.show();
+    mainWindow.focus();
   }
+
   return { success: true };
 });
 
-app.on("ready", () => {
-  createSplashWindow();
-  createMainWindow();
-  createTray();
-  createAppMenu();
-});
+// === App Lifecycle Events ===
+
+app.on("ready", initializeApp);
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+  // On macOS, keep the app running even when all windows are closed
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("second-instance", () => {
-  if (win) {
-    if (win.isMinimized()) win.restore();
-    win.focus();
+  // Focus main window if user tries to run a second instance
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+    mainWindow.focus();
   }
 });
 
 app.on("activate", () => {
+  // On macOS, re-create window when dock icon is clicked
   const allWindows = BrowserWindow.getAllWindows();
   if (allWindows.length) {
     allWindows[0].focus();
   } else {
-    createMainWindow();
+    initializeApp();
   }
 });
