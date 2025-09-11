@@ -15,6 +15,9 @@ declare global {
   interface Window {
     api: Api;
   }
+  interface File {
+    path?: string;
+  }
 }
 
 export {};

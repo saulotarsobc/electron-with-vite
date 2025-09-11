@@ -63,6 +63,22 @@ export interface IpcInvokeMap {
   "fs:open-file": { req: OpenFileRequest; res: OpenFileResponse };
   "fs:read-file": { req: ReadFileRequest; res: ReadFileResponse };
   "theme:get": { req: undefined; res: ThemeGetResponse };
+  "app:ready": { req: undefined; res: { success: true } };
+  "fs:stat-files": {
+    req: { paths: string[] };
+    res: {
+      success: boolean;
+      data?: {
+        files: Array<{
+          path: string;
+          size: number;
+          mtimeMs: number;
+          isDir: boolean;
+        }>;
+      };
+      error?: string;
+    };
+  };
 }
 
 // Events (one-way) map
@@ -77,7 +93,13 @@ export type InferInvokeReq<K extends IpcInvokeChannel> = IpcInvokeMap[K]["req"];
 export type InferInvokeRes<K extends IpcInvokeChannel> = IpcInvokeMap[K]["res"];
 
 export const isInvokeChannel = (value: string): value is IpcInvokeChannel => {
-  return ["fs:open-file", "fs:read-file", "theme:get"].includes(value);
+  return [
+    "fs:open-file",
+    "fs:read-file",
+    "theme:get",
+    "app:ready",
+    "fs:stat-files",
+  ].includes(value);
 };
 
 export const isEventChannel = (value: string): value is IpcEventChannel => {

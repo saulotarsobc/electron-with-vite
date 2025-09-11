@@ -4,5 +4,8 @@
     "source.removeUnusedImports": "explicit",
     "source.addMissingImports.ts": "explicit"
   },
-  "github.copilot.chat.localeOverride": "en"
+  "github.copilot.chat.localeOverride": "en",
+  "chat.tools.terminal.autoApprove": {
+    "npm": true
+  }
 }

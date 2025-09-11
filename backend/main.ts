@@ -36,10 +36,11 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   : RENDERER_DIST;
 
 let win: BrowserWindow | null;
+let splash: BrowserWindow | null;
 let tray: Tray | null = null;
 
 import fsSync from "node:fs";
-import { readFile as readFileAsync } from "node:fs/promises";
+import { readFile as readFileAsync, stat as statAsync } from "node:fs/promises";
 
 function resolvePublicPath() {
   if (VITE_DEV_SERVER_URL) {
@@ -54,21 +55,44 @@ function getTrayIconPath() {
   return path.join(resolvePublicPath(), "icon.ico");
 }
 
-function createWindow() {
+function createMainWindow() {
   win = new BrowserWindow({
+    show: false,
     title: `${displayName} - v${app.getVersion()}`,
-    icon: path.join(process.env.VITE_PUBLIC, "icon.ico"),
+    icon: path.join(process.env.VITE_PUBLIC!, "icon.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
-
   if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL);
+    win.loadURL(VITE_DEV_SERVER_URL + "#/home");
   } else {
-    win.loadFile(path.join(RENDERER_DIST, "index.html"));
+    win.loadFile(path.join(RENDERER_DIST, "index.html"), { hash: "home" });
+  }
+}
+
+function createSplashWindow() {
+  splash = new BrowserWindow({
+    width: 420,
+    height: 260,
+    resizable: false,
+    frame: false,
+    transparent: false,
+    show: true,
+    alwaysOnTop: true,
+    icon: path.join(process.env.VITE_PUBLIC!, "icon.ico"),
+    webPreferences: {
+      preload: path.join(__dirname, "preload.mjs"),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+  if (VITE_DEV_SERVER_URL) {
+    splash.loadURL(VITE_DEV_SERVER_URL + "#/splash");
+  } else {
+    splash.loadFile(path.join(RENDERER_DIST, "index.html"), { hash: "splash" });
   }
 }
 
@@ -140,14 +164,56 @@ ipcMain.handle("theme:get", async () => {
   return { success: true, data: { theme } };
 });
 
+ipcMain.handle("fs:stat-files", async (_event, args) => {
+  try {
+    const paths: string[] = Array.isArray(args?.paths)
+      ? args.paths.slice(0, 50)
+      : [];
+    const files = [] as Array<{
+      path: string;
+      size: number;
+      mtimeMs: number;
+      isDir: boolean;
+    }>;
+    for (const p of paths) {
+      try {
+        const s = await statAsync(p);
+        files.push({
+          path: p,
+          size: s.size,
+          mtimeMs: s.mtimeMs,
+          isDir: s.isDirectory(),
+        });
+      } catch (e) {
+        // ignore individual errors
+      }
+    }
+    return { success: true, data: { files } };
+  } catch (e: any) {
+    return { success: false, error: e.message };
+  }
+});
+
 nativeTheme.on("updated", () => {
   win?.webContents.send("theme:updated", {
     theme: nativeTheme.shouldUseDarkColors ? "dark" : "light",
   });
 });
 
+ipcMain.handle("app:ready", () => {
+  if (splash && !splash.isDestroyed()) {
+    splash.destroy();
+  }
+  if (win && !win.isDestroyed()) {
+    win.show();
+    win.focus();
+  }
+  return { success: true };
+});
+
 app.on("ready", () => {
-  createWindow();
+  createSplashWindow();
+  createMainWindow();
   createTray();
   createAppMenu();
 });
@@ -168,6 +234,6 @@ app.on("activate", () => {
   if (allWindows.length) {
     allWindows[0].focus();
   } else {
-    createWindow();
+    createMainWindow();
   }
 });
