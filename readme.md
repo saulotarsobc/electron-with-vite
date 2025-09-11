@@ -1,6 +1,6 @@
 # Electron APP and Vite
 
-> Electron APP and Vite
+> Type-safe Electron application with Vite, React 19, Mantine UI, and multi-page navigation
 
 ---
 
@@ -37,10 +37,43 @@
 
 ---
 
+## ✨ Features
+
+- **🎨 Modern UI**: Built with Mantine UI components and React 19
+- **🚀 Multi-Page Navigation**: Demonstrates multiple screens with sidebar navigation
+- **🔄 Theme Synchronization**: Bidirectional theme sync between system ↔ Electron ↔ Mantine
+- **📁 File Operations**: Drag & drop and file system operations with type safety
+- **⚡ Type-Safe IPC**: Typed inter-process communication using Zod schemas
+- **🎯 Hot Reload**: Vite-powered development with fast refresh
+- **📱 Responsive Design**: Adaptive layout that works on different screen sizes
+- **🧩 Component Library**: Reusable components following Mantine patterns
+
+### Available Pages
+
+- **🏠 Home**: Welcome page with file operations and theme controls
+- **🖼️ Gallery**: Image gallery with mock data and cards
+- **💬 Messages**: Contact list with messaging interface
+- **🔍 Search**: Search functionality with filtering
+- **👤 Profile**: User profile management
+- **⚙️ Settings**: App configuration with Mantine menu demo
+
+---
+
 ## Help
 
 - [Mantine](https://mantine.dev/)
 - [Mantine Theme Editor - remoraid](https://remoraid.dev/)
+- [Tabler Icons](https://tabler.io/icons) - Icon library used in the navigation
+
+## Architecture Overview
+
+This application follows a **modular architecture** with strict separation between frontend and backend processes:
+
+- **Dual-Process Architecture**: Main process (`backend/`) and renderer process (`src/`) with typed IPC communication
+- **Splash-to-Main Window Pattern**: Shows splash screen during initialization, then switches to main window
+- **Typed IPC Contracts**: All IPC communication uses Zod schemas in `shared/ipc/contracts.ts`
+- **Custom Hook Architecture**: Business logic encapsulated in reusable React hooks
+- **Component-Based UI**: Modular components with Mantine UI library
 
 ## Getting Started
 
@@ -59,15 +92,21 @@ $ npm run dev
 
 ## Available Scripts
 
-- **dev**: Builds the Electron app and starts the development environment using the dev script.
-- **vite:dev**: Starts the Vite development server.
-- **vite:build**: Compiles TypeScript and builds the Vite application for production.
-- **preview**: Previews the built Vite application.
-- **electron:build**: Compiles TypeScript files in the electron directory.
-- **build:all**: Runs both electron:build and vite:build to prepare the entire application.
-- **postinstall**: Installs application dependencies using electron-builder.
-- **update:readme**: Updates the readme file using a script.
-- **dist**: Builds the application and packages it for distribution using electron-builder.
+- **dev**: Builds the Electron app and starts the development environment with hot reload
+- **build**: Compiles TypeScript and builds both frontend and backend for production
+- **dist**: Builds the application and packages it for distribution using electron-builder
+- **preview**: Previews the built Vite application
+- **postinstall**: Installs application dependencies using electron-builder
+- **update-readme**: Updates the readme file using a script
+- **generate-electron-builder**: Generates electron-builder configuration
+
+### Development Workflow
+
+```bash
+npm run dev          # Vite dev server with Electron hot reload
+npm run build        # TypeScript compilation + Vite build
+npm run dist         # Full build + electron-builder packaging
+```
 
 ---
 
