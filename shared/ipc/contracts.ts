@@ -83,7 +83,7 @@ export interface IpcInvokeMap {
 
 // Events (one-way) map
 export interface IpcEventMap {
-  "theme:updated": { theme: "light" | "dark" };
+  "theme:updated": { theme?: "light" | "dark"; action?: "toggle" };
 }
 
 export type IpcInvokeChannel = keyof IpcInvokeMap;

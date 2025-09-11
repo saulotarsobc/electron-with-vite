@@ -116,7 +116,7 @@ function createTray() {
         label: "Toggle Theme (renderer)",
         click: () =>
           win?.webContents.send("theme:updated", {
-            theme: nativeTheme.shouldUseDarkColors ? "light" : "dark",
+            action: "toggle",
           }),
       },
       { type: "separator" },

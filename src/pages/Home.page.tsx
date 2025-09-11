@@ -9,6 +9,7 @@ import {
   Table,
   Text,
   Textarea,
+  useMantineColorScheme,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 
@@ -18,7 +19,7 @@ interface OpenedFile {
 }
 
 export function HomePage() {
-  const [theme, setTheme] = useState<string>("");
+  const { colorScheme } = useMantineColorScheme();
   const [file, setFile] = useState<OpenedFile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [dropped, setDropped] = useState<
@@ -26,15 +27,6 @@ export function HomePage() {
   >([]);
   const [dragOver, setDragOver] = useState(false);
   const [dropInfo, setDropInfo] = useState<string>("");
-
-  const loadTheme = async () => {
-    try {
-      const res = await window.api.invoke("theme:get");
-      if (res?.data?.theme) setTheme(res.data.theme);
-    } catch (e: any) {
-      /* ignore */
-    }
-  };
 
   const openFile = async () => {
     setError(null);
@@ -48,10 +40,6 @@ export function HomePage() {
   };
 
   useEffect(() => {
-    loadTheme();
-    const off = window.api.on("theme:updated", (payload: any) =>
-      setTheme(payload.theme)
-    );
     // Evita que o navegador tente navegar para o arquivo solto fora da área designada
     const prevent = (e: DragEvent) => {
       e.preventDefault();
@@ -59,7 +47,6 @@ export function HomePage() {
     };
     window.addEventListener("dragover", prevent);
     window.addEventListener("drop", prevent);
-    return off;
   }, []);
 
   const onDrop: React.DragEventHandler<HTMLDivElement> = async (e) => {
@@ -121,7 +108,7 @@ export function HomePage() {
     >
       <Group justify="space-between">
         <div>
-          <Badge>{`Theme: ${theme}`}</Badge>
+          <Badge>{`Theme: ${colorScheme}`}</Badge>
         </div>
         <ColorSchemeToggle />
       </Group>
