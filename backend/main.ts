@@ -13,13 +13,13 @@ export const MAIN_DIST = path.join(
   process.env.APP_ROOT,
   "..",
   "dist",
-  "backend"
+  "backend",
 );
 export const RENDERER_DIST = path.join(
   process.env.APP_ROOT,
   "..",
   "dist",
-  "frontend"
+  "frontend",
 );
 
 // Public folder path (dev vs production)
